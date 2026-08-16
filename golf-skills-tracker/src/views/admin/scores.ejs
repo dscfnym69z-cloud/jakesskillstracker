@@ -1,27 +1,28 @@
 <section>
-  <h1>All submitted scores</h1>
-  <p class="muted">Most recent 200 submissions across all pupils.</p>
+<h1>All submitted scores</h1>
+<p class="muted">Most recent 200 submissions across all pupils.</p>
 
-  <% if (!scores.length) { %>
-    <p class="muted">No scores submitted yet.</p>
-  <% } else { %>
-    <table class="table">
-      <thead><tr><th>Pupil</th><th>Challenge</th><th>Score</th><th>Submitted</th><th></th></tr></thead>
-      <tbody>
-        <% scores.forEach(function(s) { %>
-          <tr>
-            <td><%= s.pupil_name %></td>
-            <td><%= s.challenge_name %></td>
-            <td><%= s.value %></td>
-            <td><%= new Date(s.created_at).toLocaleString('en-GB') %></td>
-            <td>
-              <form method="post" action="/admin/scores/<%= s.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this score?');">
-                <button class="link-btn danger" type="submit">Delete</button>
-              </form>
-            </td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  <% } %>
+<% if (!scores.length) { %>
+<p class="muted">No scores submitted yet.</p>
+<% } else { %>
+<table class="table">
+<thead><tr><th>Pupil</th><th>Challenge</th><th>Score</th><th>Comment</th><th>Submitted</th><th></th></tr></thead>
+<tbody>
+<% scores.forEach(function(s) { %>
+<tr>
+<td><%= s.pupil_name %></td>
+<td><%= s.challenge_name %></td>
+<td><%= s.value %></td>
+<td><%= s.comment || '' %></td>
+<td><%= new Date(s.created_at).toLocaleString('en-GB') %></td>
+<td>
+<form method="post" action="/admin/scores/<%= s.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this score?');">
+<button class="link-btn danger" type="submit">Delete</button>
+</form>
+</td>
+</tr>
+<% }); %>
+</tbody>
+</table>
+<% } %>
 </section>

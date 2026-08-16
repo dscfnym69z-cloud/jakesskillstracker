@@ -5,9 +5,12 @@
 
   <div class="card narrow">
     <h2>Log a new score</h2>
-    <form method="post" action="/pupil/challenges/<%= challenge.id %>/scores" class="inline-form">
+    <form method="post" action="/pupil/challenges/<%= challenge.id %>/scores" class="stack-form score-form">
       <label>Score
         <input type="number" step="any" name="value" required />
+      </label>
+      <label>Comment (optional)
+        <textarea name="comment" rows="2" placeholder="e.g. windy today, tried a new grip…"></textarea>
       </label>
       <button class="btn btn-primary btn-small" type="submit">Submit</button>
     </form>
@@ -19,13 +22,14 @@
       <p class="muted">You haven't logged a score for this challenge yet.</p>
     <% } else { %>
       <table class="table">
-        <thead><tr><th>Score</th><th>Date &amp; time</th><th></th></tr></thead>
+        <thead><tr><th>Score &amp; comment</th><th>Date &amp; time</th><th></th></tr></thead>
         <tbody>
           <% scores.forEach(function(s) { %>
             <tr>
               <td>
-                <form method="post" action="/pupil/scores/<%= s.id %>/edit" class="inline-form">
+                <form method="post" action="/pupil/scores/<%= s.id %>/edit" class="stack-form history-edit-form">
                   <input type="number" step="any" name="value" value="<%= s.value %>" />
+                  <textarea name="comment" rows="2" placeholder="Add a comment…"><%= s.comment || '' %></textarea>
                   <button class="btn btn-small" type="submit">Save</button>
                 </form>
               </td>

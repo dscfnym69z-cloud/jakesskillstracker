@@ -1,0 +1,29 @@
+<section>
+  <h1>Coach dashboard</h1>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <span class="stat-number"><%= pupilCount %></span>
+      <span class="stat-label">Pupils</span>
+      <a href="/admin/pupils">Manage pupils →</a>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number"><%= challengeCount %></span>
+      <span class="stat-label">Challenges</span>
+      <a href="/admin/challenges">Manage challenges →</a>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number"><%= scoreCount %></span>
+      <span class="stat-label">Scores submitted</span>
+      <a href="/admin/scores">View all scores →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Getting started</h2>
+    <ol>
+      <li>Add your pupils' names under <a href="/admin/pupils">Pupils</a> so they can select themselves at login.</li>
+      <li>Create a skills challenge under <a href="/admin/challenges">Challenges</a>, upload its reference graph image, and calibrate it so pupils' best scores plot correctly.</li>
+      <li>Share the site with your pupils — they log in with just their name, no password.</li>
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof title !== 'undefined' ? title + ' · Skills Challenges' : 'Skills Challenges' %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">⛳ Skills Challenges</a>
+    <nav class="topnav">
+      <% if (session && session.isAdmin) { %>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/pupils">Pupils</a>
+        <a href="/admin/challenges">Challenges</a>
+        <a href="/admin/scores">All scores</a>
+        <form action="/logout" method="post" class="inline-form"><button class="link-btn" type="submit">Log out</button></form>
+      <% } else if (session && session.pupilId) { %>
+        <a href="/pupil">Challenges</a>
+        <a href="/pupil/key">Key</a>
+        <span class="whoami">Hi, <%= session.pupilName %></span>
+        <form action="/logout" method="post" class="inline-form"><button class="link-btn" type="submit">Log out</button></form>
+      <% } else { %>
+        <a href="/login/pupil">Pupil login</a>
+        <a href="/login/admin">Coach login</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <main class="content">
+    <%- body %>
+  </main>
+
+  <footer class="footer">
+    <span>Golf Skills Challenges</span>
+  </footer>
+</body>
+</html>

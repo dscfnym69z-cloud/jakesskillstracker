@@ -1,0 +1,85 @@
+<section>
+  <h1><%= challenge ? 'Edit challenge' : 'New challenge' %></h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+
+  <form
+    method="post"
+    action="<%= challenge ? ('/admin/challenges/' + challenge.id) : '/admin/challenges' %>"
+    enctype="multipart/form-data"
+    class="stack-form challenge-form"
+  >
+    <label>Challenge name
+      <input type="text" name="name" required value="<%= challenge ? challenge.name : '' %>" />
+    </label>
+
+    <label>Description (what does the pupil do, how do they score it?)
+      <textarea name="description" rows="3"><%= challenge ? (challenge.description || '') : '' %></textarea>
+    </label>
+
+    <fieldset>
+      <legend>For this challenge...</legend>
+      <label class="radio-label">
+        <input type="radio" name="higher_is_better" value="true" <%= (!challenge || challenge.higher_is_better) ? 'checked' : '' %> />
+        A higher score is better (e.g. putts holed out of 10)
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="higher_is_better" value="false" <%= (challenge && !challenge.higher_is_better) ? 'checked' : '' %> />
+        A lower score is better (e.g. time in seconds)
+      </label>
+    </fieldset>
+
+    <label>Key graph image<% if (challenge) { %> (upload a new one to replace the current image)<% } %>
+      <input type="file" id="image-input" name="image" accept="image/*" <%= challenge ? '' : 'required' %> />
+    </label>
+
+    <div class="card calibration-card">
+      <h2>Calibrate the graph</h2>
+      <p class="muted">
+        Click <strong>Set point A</strong>, then click on the graph where a <em>known</em> score sits (e.g. the bottom
+        of the scale). Type that score's value. Do the same for <strong>Set point B</strong> at a different point
+        on the scale (e.g. the top). The site uses these two points to work out where any pupil's best score should
+        appear on the graph.
+      </p>
+
+      <div id="calib-wrap" class="calib-wrap">
+        <img
+          id="calib-image"
+          src="<%= (challenge && challenge.image_data) ? ('/images/challenges/' + challenge.id + '/image') : '' %>"
+          alt="Key graph preview"
+          style="<%= (challenge && challenge.image_data) ? '' : 'display:none;' %>"
+        />
+        <div id="marker-a" class="calib-marker marker-a" style="display:none;">A</div>
+        <div id="marker-b" class="calib-marker marker-b" style="display:none;">B</div>
+        <p id="no-image-msg" class="muted" style="<%= (challenge && challenge.image_data) ? 'display:none;' : '' %>">
+          Choose an image above to preview and calibrate it here.
+        </p>
+      </div>
+
+      <div class="calib-controls">
+        <div class="calib-point-control">
+          <button type="button" id="arm-a" class="btn btn-secondary btn-small">📍 Set point A position</button>
+          <label>Value at point A
+            <input type="number" step="any" id="calib1_value_display" name="calib1_value"
+                   value="<%= challenge && challenge.calib1_value !== null ? challenge.calib1_value : '' %>" />
+          </label>
+        </div>
+        <div class="calib-point-control">
+          <button type="button" id="arm-b" class="btn btn-secondary btn-small">📍 Set point B position</button>
+          <label>Value at point B
+            <input type="number" step="any" id="calib2_value_display" name="calib2_value"
+                   value="<%= challenge && challenge.calib2_value !== null ? challenge.calib2_value : '' %>" />
+          </label>
+        </div>
+      </div>
+
+      <input type="hidden" id="calib1_x" name="calib1_x" value="<%= challenge && challenge.calib1_x !== null ? challenge.calib1_x : '' %>" />
+      <input type="hidden" id="calib1_y" name="calib1_y" value="<%= challenge && challenge.calib1_y !== null ? challenge.calib1_y : '' %>" />
+      <input type="hidden" id="calib2_x" name="calib2_x" value="<%= challenge && challenge.calib2_x !== null ? challenge.calib2_x : '' %>" />
+      <input type="hidden" id="calib2_y" name="calib2_y" value="<%= challenge && challenge.calib2_y !== null ? challenge.calib2_y : '' %>" />
+    </div>
+
+    <button class="btn btn-primary" type="submit"><%= challenge ? 'Save changes' : 'Create challenge' %></button>
+  </form>
+</section>
+
+<script src="/js/calibrate.js"></script>

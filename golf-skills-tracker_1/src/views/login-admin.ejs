@@ -1,0 +1,13 @@
+<section class="card narrow">
+  <h1>Coach login</h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <form method="post" action="/login/admin" class="stack-form">
+    <label>Username
+      <input type="text" name="username" autocomplete="username" required />
+    </label>
+    <label>Password
+      <input type="password" name="password" autocomplete="current-password" required />
+    </label>
+    <button class="btn btn-primary" type="submit">Log in</button>
+  </form>
+</section>

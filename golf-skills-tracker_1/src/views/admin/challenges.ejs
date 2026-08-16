@@ -1,0 +1,28 @@
+<section>
+  <h1>Challenges</h1>
+  <p><a class="btn btn-primary" href="/admin/challenges/new">+ New challenge</a></p>
+
+  <% if (!challenges.length) { %>
+    <p class="muted">No challenges yet — create one to get started.</p>
+  <% } else { %>
+    <table class="table">
+      <thead><tr><th>Name</th><th>Direction</th><th>Graph</th><th>Calibrated</th><th></th></tr></thead>
+      <tbody>
+        <% challenges.forEach(function(c) { %>
+          <tr>
+            <td><%= c.name %></td>
+            <td><%= c.higher_is_better ? 'Higher is better' : 'Lower is better' %></td>
+            <td><%= c.has_image ? 'Uploaded ✅' : 'None ⚠️' %></td>
+            <td><%= c.is_calibrated ? 'Yes ✅' : 'No ⚠️' %></td>
+            <td class="row-actions">
+              <a href="/admin/challenges/<%= c.id %>/edit">Edit</a>
+              <form method="post" action="/admin/challenges/<%= c.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this challenge and all pupils\' scores for it?');">
+                <button class="link-btn danger" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</section>

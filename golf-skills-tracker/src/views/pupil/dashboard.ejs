@@ -12,10 +12,14 @@
           <% if (c.description) { %><p><%= c.description %></p><% } %>
           <p class="muted small"><%= c.higher_is_better ? 'Higher score is better' : 'Lower score is better' %></p>
 
-          <form method="post" action="/pupil/challenges/<%= c.id %>/scores" class="inline-form score-form">
+          <form method="post" action="/pupil/challenges/<%= c.id %>/scores" class="stack-form score-form">
             <label>
               Score
               <input type="number" step="any" name="value" required />
+            </label>
+            <label>
+              Comment (optional)
+              <textarea name="comment" rows="2" placeholder="e.g. windy today, tried a new grip…"></textarea>
             </label>
             <button class="btn btn-primary btn-small" type="submit">Submit score</button>
           </form>

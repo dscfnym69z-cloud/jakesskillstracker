@@ -1,0 +1,22 @@
+{
+  "name": "golf-skills-tracker",
+  "version": "1.0.0",
+  "description": "Website for golf pupils to record scores on skills challenges set by their coach.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "cookie-session": "^2.1.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.5"
+  }
+}

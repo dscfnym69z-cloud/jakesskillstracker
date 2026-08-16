@@ -1,0 +1,28 @@
+<section>
+  <h1>Hi <%= pupilName %> 👋</h1>
+  <p class="muted">Choose a challenge below to log a new score, or view your history.</p>
+
+  <% if (!challenges.length) { %>
+    <p class="muted">No challenges have been set yet — check back soon.</p>
+  <% } else { %>
+    <div class="challenge-grid">
+      <% challenges.forEach(function(c) { %>
+        <div class="card challenge-card">
+          <h2><%= c.name %></h2>
+          <% if (c.description) { %><p><%= c.description %></p><% } %>
+          <p class="muted small"><%= c.higher_is_better ? 'Higher score is better' : 'Lower score is better' %></p>
+
+          <form method="post" action="/pupil/challenges/<%= c.id %>/scores" class="inline-form score-form">
+            <label>
+              Score
+              <input type="number" step="any" name="value" required />
+            </label>
+            <button class="btn btn-primary btn-small" type="submit">Submit score</button>
+          </form>
+
+          <a class="view-history" href="/pupil/history/<%= c.id %>">View your history →</a>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</section>

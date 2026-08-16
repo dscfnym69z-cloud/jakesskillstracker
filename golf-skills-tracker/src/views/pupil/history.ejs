@@ -1,0 +1,44 @@
+<section>
+  <p><a href="/pupil">← Back to challenges</a></p>
+  <h1><%= challenge.name %></h1>
+  <p class="muted"><%= challenge.higher_is_better ? 'Higher score is better' : 'Lower score is better' %></p>
+
+  <div class="card narrow">
+    <h2>Log a new score</h2>
+    <form method="post" action="/pupil/challenges/<%= challenge.id %>/scores" class="inline-form">
+      <label>Score
+        <input type="number" step="any" name="value" required />
+      </label>
+      <button class="btn btn-primary btn-small" type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Your history (<%= scores.length %>)</h2>
+    <% if (!scores.length) { %>
+      <p class="muted">You haven't logged a score for this challenge yet.</p>
+    <% } else { %>
+      <table class="table">
+        <thead><tr><th>Score</th><th>Date &amp; time</th><th></th></tr></thead>
+        <tbody>
+          <% scores.forEach(function(s) { %>
+            <tr>
+              <td>
+                <form method="post" action="/pupil/scores/<%= s.id %>/edit" class="inline-form">
+                  <input type="number" step="any" name="value" value="<%= s.value %>" />
+                  <button class="btn btn-small" type="submit">Save</button>
+                </form>
+              </td>
+              <td><%= new Date(s.created_at).toLocaleString('en-GB') %></td>
+              <td>
+                <form method="post" action="/pupil/scores/<%= s.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this score?');">
+                  <button class="link-btn danger" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+</section>

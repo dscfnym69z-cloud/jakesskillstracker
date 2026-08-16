@@ -1,0 +1,20 @@
+<section class="card narrow">
+  <h1>Pupil login</h1>
+  <p class="muted">Find your name and select it to see your challenges.</p>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <% if (!pupils.length) { %>
+    <p class="muted">No pupils have been added yet. Ask your coach to add your name.</p>
+  <% } else { %>
+    <form method="post" action="/login/pupil" class="stack-form">
+      <label>Your name
+        <select name="pupilId" required>
+          <option value="" disabled selected>Choose your name…</option>
+          <% pupils.forEach(function(p) { %>
+            <option value="<%= p.id %>"><%= p.name %></option>
+          <% }); %>
+        </select>
+      </label>
+      <button class="btn btn-primary" type="submit">Continue</button>
+    </form>
+  <% } %>
+</section>

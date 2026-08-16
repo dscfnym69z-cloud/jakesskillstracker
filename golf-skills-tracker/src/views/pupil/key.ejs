@@ -1,0 +1,38 @@
+<section>
+  <h1>Key: how you compare</h1>
+  <p class="muted">Your personal best on each challenge, plotted against the coach's reference graph.</p>
+
+  <% if (!items.length) { %>
+    <p class="muted">No challenges have been set yet.</p>
+  <% } else { %>
+    <div class="key-grid">
+      <% items.forEach(function(item) { %>
+        <div class="card key-card">
+          <h2><%= item.name %></h2>
+          <% if (!item.has_image) { %>
+            <p class="muted">No reference graph has been uploaded for this challenge yet.</p>
+          <% } else if (!item.calibrated) { %>
+            <img src="/images/challenges/<%= item.id %>/image" alt="<%= item.name %> key graph" class="key-image" />
+            <p class="muted small">This graph hasn't been calibrated by the coach yet, so your score can't be plotted on it.</p>
+          <% } else { %>
+            <div class="key-image-wrap">
+              <img src="/images/challenges/<%= item.id %>/image" alt="<%= item.name %> key graph" class="key-image" />
+              <% if (item.marker) { %>
+                <div class="score-marker <%= item.marker.outOfRange ? 'out-of-range' : '' %>"
+                     style="left: <%= item.marker.x %>%; top: <%= item.marker.y %>%;"
+                     title="Your best: <%= item.best %>">
+                  ★
+                </div>
+              <% } %>
+            </div>
+            <% if (item.best === null || item.best === undefined) { %>
+              <p class="muted small">Log a score for this challenge to see yourself on the graph.</p>
+            <% } else { %>
+              <p class="best-label">Your best: <strong><%= item.best %></strong><% if (item.marker && item.marker.outOfRange) { %> (off the scale shown!)<% } %></p>
+            <% } %>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</section>

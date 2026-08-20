@@ -216,6 +216,12 @@ legend {
   font-size: 0.9rem;
 }
 
+.chart-wrap {
+  position: relative;
+  height: 260px;
+  width: 100%;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;

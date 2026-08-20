@@ -1,48 +1,100 @@
 <section>
-  <p><a href="/pupil">← Back to challenges</a></p>
-  <h1><%= challenge.name %></h1>
-  <p class="muted"><%= challenge.higher_is_better ? 'Higher score is better' : 'Lower score is better' %></p>
+<p><a href="/pupil">← Back to challenges</a></p>
+<h1><%= challenge.name %></h1>
+<p class="muted"><%= challenge.higher_is_better ? 'Higher score is better' : 'Lower score is better' %></p>
 
-  <div class="card narrow">
-    <h2>Log a new score</h2>
-    <form method="post" action="/pupil/challenges/<%= challenge.id %>/scores" class="stack-form score-form">
-      <label>Score
-        <input type="number" step="any" name="value" required />
-      </label>
-      <label>Comment (optional)
-        <textarea name="comment" rows="2" placeholder="e.g. windy today, tried a new grip…"></textarea>
-      </label>
-      <button class="btn btn-primary btn-small" type="submit">Submit</button>
-    </form>
-  </div>
+<div class="card narrow">
+<h2>Log a new score</h2>
+<form method="post" action="/pupil/challenges/<%= challenge.id %>/scores" class="stack-form score-form">
+<label>Score
+<input type="number" step="any" name="value" required />
+</label>
+<label>Comment (optional)
+<textarea name="comment" rows="2" placeholder="e.g. windy today, tried a new grip…"></textarea>
+</label>
+<button class="btn btn-primary btn-small" type="submit">Submit</button>
+</form>
+</div>
 
-  <div class="card">
-    <h2>Your history (<%= scores.length %>)</h2>
-    <% if (!scores.length) { %>
-      <p class="muted">You haven't logged a score for this challenge yet.</p>
-    <% } else { %>
-      <table class="table">
-        <thead><tr><th>Score &amp; comment</th><th>Date &amp; time</th><th></th></tr></thead>
-        <tbody>
-          <% scores.forEach(function(s) { %>
-            <tr>
-              <td>
-                <form method="post" action="/pupil/scores/<%= s.id %>/edit" class="stack-form history-edit-form">
-                  <input type="number" step="any" name="value" value="<%= s.value %>" />
-                  <textarea name="comment" rows="2" placeholder="Add a comment…"><%= s.comment || '' %></textarea>
-                  <button class="btn btn-small" type="submit">Save</button>
-                </form>
-              </td>
-              <td><%= new Date(s.created_at).toLocaleString('en-GB') %></td>
-              <td>
-                <form method="post" action="/pupil/scores/<%= s.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this score?');">
-                  <button class="link-btn danger" type="submit">Delete</button>
-                </form>
-              </td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    <% } %>
-  </div>
+<div class="card">
+<h2>Progress over time</h2>
+<% if (!scores.length) { %>
+<p class="muted">Log a score to start seeing your progress here.</p>
+<% } else { %>
+<div class="chart-wrap">
+<canvas id="historyChart"></canvas>
+</div>
+<% } %>
+</div>
+
+<div class="card">
+<h2>Your history (<%= scores.length %>)</h2>
+<% if (!scores.length) { %>
+<p class="muted">You haven't logged a score for this challenge yet.</p>
+<% } else { %>
+<table class="table">
+<thead><tr><th>Score &amp; comment</th><th>Date &amp; time</th><th></th></tr></thead>
+<tbody>
+<% scores.forEach(function(s) { %>
+<tr>
+<td>
+<form method="post" action="/pupil/scores/<%= s.id %>/edit" class="stack-form history-edit-form">
+<input type="number" step="any" name="value" value="<%= s.value %>" />
+<textarea name="comment" rows="2" placeholder="Add a comment…"><%= s.comment || '' %></textarea>
+<button class="btn btn-small" type="submit">Save</button>
+</form>
+</td>
+<td><%= new Date(s.created_at).toLocaleString('en-GB') %></td>
+<td>
+<form method="post" action="/pupil/scores/<%= s.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this score?');">
+<button class="link-btn danger" type="submit">Delete</button>
+</form>
+</td>
+</tr>
+<% }); %>
+</tbody>
+</table>
+<% } %>
+</div>
 </section>
+
+<% if (scores.length) { %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script>
+(function () {
+var points = <%- chartDataJson %>;
+var labels = points.map(function (p) {
+return new Date(p.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+});
+var values = points.map(function (p) { return p.value; });
+var ctx = document.getElementById('historyChart').getContext('2d');
+new Chart(ctx, {
+type: 'line',
+data: {
+labels: labels,
+datasets: [{
+label: 'Score',
+data: values,
+borderColor: '#146c43',
+backgroundColor: 'rgba(26, 127, 79, 0.15)',
+tension: 0.25,
+fill: true,
+pointRadius: 4,
+pointBackgroundColor: '#146c43',
+pointBorderColor: '#ffffff',
+pointBorderWidth: 1,
+}],
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: { legend: { display: false } },
+scales: {
+y: { beginAtZero: false, ticks: { color: '#5b6b62' }, grid: { color: '#d8e6dd' } },
+x: { ticks: { color: '#5b6b62' }, grid: { display: false } },
+},
+},
+});
+})();
+</script>
+<% } %>
